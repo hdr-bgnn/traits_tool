@@ -19,58 +19,61 @@ print(fileName)
     #[10] Alt Fin Spine
     #[11] Trunk
 
-# A : Standard length / Distance between nose(minX of head) to tail of trunk(xMax of trunk)
+# X : Standard length / Distance between nose(minX of head) to tail of trunk(xMax of trunk)
 head_xMin=ttm.get_trait_edges(traitsMapAll,6,"xMin") #gets xMin of head(trait_index=6)
 trunk_xMax=ttm.get_trait_edges(traitsMapAll,11,"xMax") #gets xMax of trunk(trait_index=11)
-A=float(abs(trunk_xMax-head_xMin))
-print("A :",A," pixels")
+X=float(abs(trunk_xMax-head_xMin))
+print("X :",X," pixels")
 
-# B : eye to head area Ratio
+# A : Eye to head area Ratio
 eye_area=ttm.get_trait_area(traitsMapAll,7) #gets area  of eye (trait_index=7)
 head_area=ttm.get_trait_area(traitsMapAll,6) #gets area  of head (trait_index=6)
-B=float(eye_area/head_area)
-print("B :",B)
+A=float(eye_area/head_area)
+print("A :",A)
 
-# C : Length from back of head to caudal fin (distance between xMax of head and xMax of trunk(caudal fin)) ????? C=A-E ????
+# B : Length from back of head to caudal fin (distance between xMax of head and xMax of trunk(caudal fin)) ????? C=A-E ????
 head_xMax=ttm.get_trait_edges(traitsMapAll,6,"xMax") #gets xMax of head(trait_index=6)
 trunk_xMax=ttm.get_trait_edges(traitsMapAll,11,"xMax") #gets xMax of trunk(trait_index=11)
-C=float(abs(trunk_xMax-head_xMax))
+B=float(abs(trunk_xMax-head_xMax))
+print("B : ",B," pixels")
+
+
+# C : Eye diameter (eye width)
+C=float(ttm.get_trait_dimensions(traitsMapAll,7,"width")) #gets width of eye (trait_index=7)
 print("C : ",C," pixels")
 
-
-# D : Eye diameter (eye width)
-D=float(ttm.get_trait_dimensions(traitsMapAll,7,"width")) #gets width of eye (trait_index=7)
-print("D : ",D," pixels")
-
-# E : Head length (above midline(horizontal line over centroid of eye or halfpoint of the eye width) of eye)
+# D : Head length (above midline(horizontal line over centroid of eye or halfpoint of the eye width) of eye)
 
 #if we use centroid
 eye_centroid=ttm.get_trait_centroid(traitsMapAll,7) #returns  the (x,y) coordinates of centroid of eye
 min,max=ttm.get_trait_minmax_ofPoint(traitsMapAll,6, round(eye_centroid[0],0), 0) 
-E=float(float(abs(max-min)))
-print("E : ",E," pixels (calculated using centroid)")
+D=float(float(abs(max-min)))
+print("D : ",D," pixels (calculated using centroid)")
 
 #if we use middle point 
 eye_edges=ttm.get_trait_edges(traitsMapAll,7,"all")   # returns xMin,xMax,yMin,yMax of eye (trait_index=7)
 midX_eye=abs(eye_edges[0]+(eye_edges[1]-eye_edges[0])/2)
 min,max=ttm.get_trait_minmax_ofPoint(traitsMapAll,6, round(midX_eye,0), 0)
-E=float(abs(max-min))
-print("E : ",E," pixels (calculated using midPoint)")
+D=float(abs(max-min))
+print("D : ",D," pixels (calculated using midPoint)")
 
-# F: Head depth (head width)
-F=float(ttm.get_trait_dimensions(traitsMapAll,6,"width"))
-print("F : ",F," pixels")
+# E: Head depth (head width)
+E=float(ttm.get_trait_dimensions(traitsMapAll,6,"width"))
+print("E : ",E," pixels")
 
-# G : snout length (distance between xMin of head and xMin of eye )
+# F : snout length (distance between xMin of head and xMin of eye )
 eye_xMin=ttm.get_trait_edges(traitsMapAll,7,"xMin")
 head_xMin=ttm.get_trait_edges(traitsMapAll,6,"xMin")
-G=float(abs(head_xMin-eye_xMin))
-print("G : ",G," pixels")
+F=float(abs(head_xMin-eye_xMin))
+print("F : ",F," pixels")
 
-
+# G: Head & Trunk Measurements
+head_xMin=ttm.get_trait_edges(traitsMapAll,6,"xMin")
+trunk_xMax=ttm.get_trait_edges(traitsMapAll,11,"xMax")
+G=float(abs(trunk_xMax-head_xMin))
 #JSON String
 
-output_string={"fileName":fileName, "A": A , "B": B , "C": C , "D": D, "E": E , "F": F , "G": G}
+output_string={"fileName":fileName, "X": X ,"A": A , "B": B , "C": C , "D": D, "E": E , "F": F , "G": G}
 json_string = json.dumps(output_string)
 
 print(json_string) 
