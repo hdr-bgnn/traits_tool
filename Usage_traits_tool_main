@@ -1,0 +1,5 @@
+Usage of traits_tool_main.py:
+python traits_tool_main.py <input_file.png> <output_file.json>
+
+input_file : segmented fish image in .png
+output_file : dictionary with fish measurements .json
